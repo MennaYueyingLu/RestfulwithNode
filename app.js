@@ -8,6 +8,19 @@ const orderRoutes = require('./api/routes/orders');
 //log request information
 app.use(morgan('dev'));
 
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+
+//handle cors
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if(req.method === 'OPTIONS'){
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({});
+    }
+});
+
 app.use('/products', productRoutes);
 
 app.use('/orders', orderRoutes);
